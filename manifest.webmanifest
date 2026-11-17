@@ -1,0 +1,12 @@
+{
+  "name": "Zephan AI",
+  "short_name": "Zephan AI",
+  "description": "Your Smart AI Assistant",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080d19",
+  "theme_color": "#080d19",
+  "icons": [
+    { "src": "/z-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
