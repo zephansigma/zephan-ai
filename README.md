@@ -16,7 +16,7 @@ Zephan AI adalah antarmuka chat AI responsif dengan tema hitam-biru, riwayat cha
 2. Buka https://app.netlify.com/ dan masuk/daftar. Pilih **Add new project** lalu **Import an existing project**.
 3. Hubungkan GitHub dan pilih repositori Zephan AI.
 4. Pastikan pengaturan build terbaca dari `netlify.toml`:
-   - Build command: `npm run build --workspace web`
+   - Build command: `npm run build`
    - Publish directory: `web/dist`
    - Functions directory: `netlify/functions`
 5. Sebelum atau sesudah deploy, buka **Site configuration → Environment variables** (nama menu bisa sedikit berbeda) dan tambahkan:

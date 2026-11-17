@@ -20,46 +20,39 @@ function collectCitations(response) {
   return [...found.values()];
 }
 
-function json(statusCode, payload) {
-  return {
-    statusCode,
+function json(status, payload) {
+  return new Response(JSON.stringify(payload), {
+    status,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store",
     },
-    body: JSON.stringify(payload),
-  };
+  });
 }
 
-export async function handler(event) {
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 204,
+export default async function handler(req) {
+  if (req.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
       },
-      body: "",
-    };
-  }
-
-  if (event.httpMethod === "GET") {
-    return json(200, { ok: true, app: "Zephan AI", model: MODEL });
-  }
-
-  if (event.httpMethod !== "POST") {
-    return json(405, { error: "Metode permintaan tidak didukung." });
-  }
-
-  if (!process.env.OPENAI_API_KEY) {
-    return json(500, {
-      error: "API key belum dipasang. Atur OPENAI_API_KEY di Environment Variables Netlify.",
     });
   }
 
+  if (req.method === "GET") {
+    return json(200, { ok: true, app: "Zephan AI", model: MODEL });
+  }
+
+  if (req.method !== "POST") {
+    return json(405, { error: "Metode permintaan tidak didukung." });
+  }
+
   try {
-    const body = event.body ? JSON.parse(event.body) : {};
+    const raw = await req.text();
+    const body = raw ? JSON.parse(raw) : {};
     const { messages, useWebSearch = true } = body;
 
     if (!Array.isArray(messages) || messages.length === 0) {
@@ -75,7 +68,7 @@ export async function handler(event) {
       return json(400, { error: "Pesan terakhir harus dari pengguna." });
     }
 
-    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const client = new OpenAI();
     const request = {
       model: MODEL,
       instructions: [
@@ -118,3 +111,7 @@ export async function handler(event) {
     });
   }
 }
+
+export const config = {
+  path: ["/api/chat", "/api/health"],
+};
