@@ -1,17 +1,74 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#080d19" />
-    <meta name="description" content="Zephan AI — teman berpikir dan mencari informasi dari sumber terpercaya." />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="icon" href="/z-mark.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/style.css" />
-    <title>Zephan AI</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src.js"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zephan AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080d19;color:white;font-family:Arial}
+header{padding:20px;background:#101a30}
+h2{color:#63aaff;margin:0}
+main{max-width:700px;margin:auto;padding:16px}
+#chat{height:65vh;overflow:auto}
+.msg{padding:13px;margin:12px 0;border-radius:14px;max-width:85%;line-height:1.5;white-space:pre-wrap}
+.ai{background:#172641}
+.user{background:#1556a5;margin-left:auto}
+form{display:flex;gap:8px}
+input{flex:1;min-width:0;padding:14px;border-radius:12px;border:1px solid #314463;background:#111d32;color:white;font-size:16px}
+button{padding:13px;border:0;border-radius:12px;background:#2878df;color:white}
+#new{margin-top:12px;background:#263653}
+small{color:#91a5c5}
+</style>
+</head>
+<body>
+<header>
+<h2>✦ Zephan AI</h2>
+<p>Asisten AI Demo</p>
+</header>
+<main>
+<div id="chat">
+<div class="msg ai">Halo! Saya Zephan AI. Ada yang bisa saya bantu? 😊</div>
+</div>
+<form id="form">
+<input id="input" placeholder="Tulis pesan..." autocomplete="off">
+<button>Kirim</button>
+</form>
+<button id="new">＋ Chat Baru</button>
+<p><small>Versi demo gratis. Jawaban masih berupa contoh otomatis.</small></p>
+</main>
+<script>
+const chat=document.getElementById("chat");
+const input=document.getElementById("input");
+
+function add(text,type){
+ const el=document.createElement("div");
+ el.className="msg "+type;
+ el.textContent=text;
+ chat.appendChild(el);
+ chat.scrollTop=chat.scrollHeight;
+}
+
+document.getElementById("form").addEventListener("submit",function(e){
+ e.preventDefault();
+ const q=input.value.trim();
+ if(!q)return;
+ add(q,"user");
+ input.value="";
+ let answer="Terima kasih sudah bertanya! Saya masih dalam versi demo dan belum bisa menjawab semua pertanyaan.";
+ const s=q.toLowerCase();
+ if(s.includes("halo")||s.includes("hai"))answer="Halo juga! Ada yang bisa saya bantu? 😊";
+ else if(s.includes("nama"))answer="Nama saya Zephan AI!";
+ else if(s.includes("siapa"))answer="Saya Zephan AI, asisten virtual demo.";
+ else if(s.includes("basket"))answer="Basket adalah olahraga yang dimainkan dua tim untuk mencetak angka dengan memasukkan bola ke ring.";
+ else if(s.includes("terima kasih"))answer="Sama-sama! Senang bisa membantu 😊";
+ setTimeout(()=>add(answer,"ai"),300);
+});
+
+document.getElementById("new").addEventListener("click",()=>{
+ chat.innerHTML='<div class="msg ai">Halo! Saya Zephan AI. Ada yang bisa saya bantu? 😊</div>';
+});
+</script>
+</body>
 </html>
